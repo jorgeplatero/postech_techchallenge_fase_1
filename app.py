@@ -346,3 +346,45 @@ with tab3:
         height = 600
         )
     st.plotly_chart(fig8, use_container_width = True)
+  
+    #distribuição top 10
+    st.markdown('Distribuição da Quantidade e Valor da Exportação para os Principais Importadores')
+    index = evolucao_top_10.query('quantidade_exportacao == 0').index.to_list()
+    distribuicao_top_10 = evolucao_top_10.drop(index)
+    distribuicao_top_10.head()
+    coluna9, coluna10 = st.columns(2)
+    with coluna9:
+        fig9 = px.scatter(
+            data_frame = distribuicao_top_10, 
+            x = 'pais', 
+            y = 'ano', 
+            size = 'valor_exportacao', 
+            color = px.Constant('Valor (US$)'),
+            color_discrete_sequence = ['#673E69']
+            )
+        fig9.update_layout(
+            title = 'Bubble', 
+            xaxis_title = 'Países', 
+            yaxis_title = 'Ano', 
+            legend_title = 'Legenda',
+            width = 1000,
+            height = 800
+            )
+        fig9.update_traces(marker = dict(size = 3.5 * distribuicao_top_10['valor_exportacao']))
+    with coluna10:
+        fig = px.scatter(
+            data_frame = distribuicao_top_10, 
+            x = 'pais', 
+            y = 'ano', 
+            size = 'quantidade_exportacao', 
+            color = px.Constant('Quantidade (Litros)'),
+            color_discrete_sequence = ['#D8D87C'])
+        fig.update_layout(
+            title = 'Bubble', 
+            xaxis_title = 'Países', 
+            yaxis_title = 'Ano', 
+            legend_title = 'Legenda',
+            width = 1000,
+            height = 800
+            )
+        fig.update_traces(marker = dict(size = 3.5 * distribuicao_top_10['quantidade_exportacao']))
