@@ -35,15 +35,14 @@ with tab0:
 
     #texto
     '''
-    ## Esse relatório contém uma análise do conjunto de dados relacionados à exportação de vinhos da Vitibrasil nos últimos 15 anos
+    ## Dados e estatísticas da exportação de vinhos da Vitibrasil nos últimos 15 anos
 
     Base de dados Vitibrasil
 
     http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06
 
-    A Vitibrasil uma organização associada à Embrapa, que tem como objetivo fornecer informações sobre a produção de uvas no estado do Rio Grande do Sul;
-    Os dados podem ser encontrados no website da Vitibrasil;
-    Este Dashboard tem como objetivo fornecer insights valiosos sobre o valor exportado nos últimos 15 anos em milhões de dólares, com destaque para a Rússia e o Paraguai em comparação com outros países.
+    A Vitibrasil uma organização associada à Embrapa, que tem como objetivo fornecer informações sobre a produção de uvas no estado do Rio Grande do Sul, que podem ser encontradas em seu website.
+    Este dashboard apresenta os principais dados e estatísticas a respeito da exportação de vinho brasileiro nos últimos 15 anos.
     '''
     #dataFrame
     df = pd.DataFrame(dados)
