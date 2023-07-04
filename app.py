@@ -367,24 +367,24 @@ with tab3:
             xaxis_title = 'Países', 
             yaxis_title = 'Ano', 
             legend_title = 'Legenda',
-            width = 1000,
-            height = 800
+            height = 700
             )
         fig9.update_traces(marker = dict(size = 3.5 * distribuicao_top_10['valor_exportacao']))
+        st.plotly_chart(fig9, use_container_width = True)
     with coluna10:
-        fig = px.scatter(
+        fig10 = px.scatter(
             data_frame = distribuicao_top_10, 
             x = 'pais', 
             y = 'ano', 
             size = 'quantidade_exportacao', 
             color = px.Constant('Quantidade (Litros)'),
             color_discrete_sequence = ['#D8D87C'])
-        fig.update_layout(
+        fig10.update_layout(
             title = 'Bubble', 
             xaxis_title = 'Países', 
             yaxis_title = 'Ano', 
             legend_title = 'Legenda',
-            width = 1000,
-            height = 800
+            height = 700
             )
-        fig.update_traces(marker = dict(size = 3.5 * distribuicao_top_10['quantidade_exportacao']))
+        fig10.update_traces(marker = dict(size = 3.5 * distribuicao_top_10['quantidade_exportacao']))
+        st.plotly_chart(fig10, use_container_width = True)
