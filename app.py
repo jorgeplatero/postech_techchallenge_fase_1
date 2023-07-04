@@ -21,6 +21,9 @@ def formata_numero_cartao(valor, prefixo = '', sufixo = ''):
 #layout
 st.set_page_config(layout = 'wide')
 
+#theme
+base = 'dark'
+
 #lendo a base de dados
 dados = pd.read_csv('dados_uteis.csv')
 
