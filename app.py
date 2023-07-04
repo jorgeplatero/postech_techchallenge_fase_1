@@ -288,7 +288,7 @@ with tab3:
     st.plotly_chart(fig4, use_container_width = True)
 
     #evolução do percentual médio 
-    st.markdown('Evolução do Percentual Médio')
+    st.markdown('Evolução do Percentual Médio da Produção Nacional Exportado')
     percentual_exportacao = dados[['ano', 'pais', 'percentual_exportacao']].round(2)
     evolucao_percentual_medio_exportacao = percentual_exportacao.groupby('ano').mean('percentual_exportacao').round(2)
     fig5 = px.line(
@@ -306,7 +306,7 @@ with tab3:
     st.plotly_chart(fig5, use_container_width = True) 
 
     #percentual médio top 10
-    st.markdown('Percentual Médio para os Principais Importadores')
+    st.markdown('Percentual Médio da Produção Nacional para os Principais Importadores')
     coluna7, coluna8 = st.columns(2)
     with coluna7:
         #bar
@@ -332,7 +332,7 @@ with tab3:
         st.plotly_chart(fig7, use_container_width = True)
 
     #evolução do percentual médio top 10
-    st.markdown('Evolução do Percentual Médio para os Principais Importadores')
+    st.markdown('Evolução do Percentual Médio da Produção Nacional para os Principais Importadores')
     fig8 = px.line(
     data_frame = evolucao_top_10, 
     x = 'ano', 
