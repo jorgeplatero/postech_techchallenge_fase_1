@@ -22,7 +22,7 @@ def formata_numero_cartao(valor, prefixo = '', sufixo = ''):
 st.set_page_config(layout = 'wide')
 
 #lendo a base de dados
-dados = pd.read_csv('Dados.csv')
+dados = pd.read_csv('dados_uteis.csv')
 
 #título da aplicação
 st.title('Evolução da Exportação de Vinho Brasileiro nos Últimos 15 Anos')
