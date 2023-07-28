@@ -363,13 +363,13 @@ with tab3:
     with coluna1:
         st.metric('**Preço Médio**', formata_numero_cartao(dados['valor_exportacao_por_litro'].mean(), 'US$', ''))
     with coluna2:
-        st.metric('**Percentual Médio**', formata_numero_cartao(dados['percentual_exportacao'].mean(), '', '\%'))
+        st.metric('**Percentual Médio**', formata_numero_cartao(dados['percentual_exportacao'].mean(), '%'))
 
     coluna3, coluna4 = st.columns(2)
     with coluna3:
         st.metric('**Preço Médio em 2021**', formata_numero_cartao(dados.query('ano == 2021')['valor_exportacao_por_litro'].mean(), 'US$', ''))
     with coluna4:
-        st.metric('**Percentual Médio em 2021**', formata_numero_cartao(dados.query('ano == 2021')['percentual_exportacao'].mean(), '', '\%'))
+        st.metric('**Percentual Médio em 2021**', formata_numero_cartao(dados.query('ano == 2021')['percentual_exportacao'].mean(), '%'))
 
     #evolução dos valores e quantidade negociados
     st.markdown('**Evolução dos Valores e Quantidade Negociados**')
