@@ -290,9 +290,8 @@ with tab0:
 
     #tratando dados para visualização
     df['ano'] = df['ano'].astype(str).to_list()
-    df.columns = ['Ano', 'País', 'Quantidade Importada (L)', 'Valor de Importação (US$)', 'Valor por Litro Importado (US$)', 
-    'Quantidade Exportada (L)', 'Valor de Exportação (US$)', 'Valor por Litro Exportado (US$)', 'Produção Brasileira Total (L)', 
-    'Percentual da Produção Exportado (%)']
+    df.columns = ['Ano', 'País', 'Quantidade Exportada (L)', 'Valor de Exportação (US$)', 'Valor por Litro Exportado (US$)', 'Produção Brasileira Total (L)', 
+    'Percentual Exportado da Produção (%)']
 
     st.dataframe(df, use_container_width = True)
 
