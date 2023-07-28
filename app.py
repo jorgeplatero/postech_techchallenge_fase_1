@@ -29,7 +29,7 @@ dados = pd.read_csv('dados_uteis.csv')
 #tabelas
 
 #tab1
-evolucao_valores_exportacao = dados.groupby('ano').sum().drop('pais', axis = 1)
+evolucao_exportacao = dados.groupby('ano').sum().drop('pais', axis = 1)
 
 acumulado_top_10_mercados = pd.DataFrame(dados.groupby('pais').sum()[['quantidade_exportacao', 'valor_exportacao']])
 selecao = acumulado_top_10_mercados.sort_values('valor_exportacao', ascending = False).head(10).index #selecionando os 10 maiores mercados de exportação
@@ -38,9 +38,6 @@ acumulado_top_10_mercados.reset_index(inplace = True)
 
 selecao = acumulado_top_10_mercados['pais'].to_list()
 evolucao_top_10 = dados[dados.pais.isin(selecao)]
-
-#tab2
-evolucao_quantidade_exportacao = dados.groupby('ano').sum().drop('pais', axis = 1)
 
 #tab3
 evolucao_preco_medio_por_litro = dados.groupby('ano').mean('valor_exportacao_por_litro').round(2)
@@ -60,8 +57,8 @@ distribuicao_quantidade_valor_top_10.head()
 
 #tab1
 fig_evolucao_valores_exportacao = px.line(
-    evolucao_valores_exportacao, 
-    x = evolucao_valores_exportacao.index, 
+    evolucao_exportacao, 
+    x = evolucao_exportacao.index, 
     y = 'valor_exportacao',
     color_discrete_sequence = ['#673E69'])
 fig_evolucao_valores_exportacao.update_layout(
@@ -104,8 +101,8 @@ fig_evolucao_valores_top_10_treemap.update_traces(root_color = '#673E69')
 
 #tab2
 fig_evolucao_quantidade_exportacao = px.line(
-    evolucao_quantidade_exportacao, 
-    x = evolucao_quantidade_exportacao.index, 
+    evolucao_exportacao, 
+    x = evolucao_exportacao.index, 
     y = 'quantidade_exportacao',
     color_discrete_sequence = ['#D8D87C'])
 fig_evolucao_quantidade_exportacao.update_layout(
@@ -149,6 +146,27 @@ fig_evolucao_quantidade_top_10_treemap = px.treemap(evolucao_top_10, path = ['an
 fig_evolucao_quantidade_top_10_treemap.update_traces(root_color = '#D8D87C')
 
 #tab3
+fig_evolucao_valores_quantidade_exportacao = px.line(
+    evolucao_exportacao, 
+    x = evolucao_exportacao.index, 
+    y = ['valor_exportacao', 'quantidade_exportacao'],
+    color_discrete_map = {
+        'quantidade_exportacao': '#673E69',
+        'valor_exportacao': '#D8D87C'
+        })
+nome_variaveis = {'quantidade_exportacao': 'Quantidade (Litros)', 'valor_exportacao': 'Valor (US$)'}
+fig_evolucao_valores_quantidade_exportacao.for_each_trace(lambda x: x.update(
+                                    name = nome_variaveis[x.name],
+                                    legendgroup = nome_variaveis[x.name],
+                                    hovertemplate = x.hovertemplate.replace(x.name, nome_variaveis[x.name])))
+fig_evolucao_valores_quantidade_exportacao.update_layout(
+    title = 'Time series', 
+    xaxis_title = 'Países', 
+    yaxis_title = 'Valores', 
+    legend_title = 'Legenda', 
+    width = 1000, 
+    height = 600)
+
 fig_evolucao_preco_medio_por_litro = px.line(
         data_frame = evolucao_preco_medio_por_litro, 
         x = evolucao_preco_medio_por_litro.index, 
@@ -353,6 +371,13 @@ with tab3:
     with coluna4:
         st.metric('**Percentual Médio em 2021**', formata_numero_cartao(dados.query('ano == 2021')['percentual_exportacao'].mean(), '', '\%'))
 
+    #evolução dos valores e quantidade negociados
+    st.markdown('**Evolução dos Valores e Quantidade Negociados**')
+    st.plotly_chart(fig_evolucao_valores_quantidade_exportacao, use_container_width = True) 
+
+    '''Em 2009, o mercado de vinho brasileiro apresentou rentabilidade muito menor, no que diz respeito a exportação, que nos anos subsequentes. Já em 2013, houve o inverso, 
+    os valores negociados foram substanciamente maiores que em outros anos da série. Essa dinâmica foi fortemente influenciada pela Rússia.'''
+
     #evolução do preço médio 
     st.markdown('**Evolução do Preço Médio por Litro**')
     st.plotly_chart(fig_evolucao_preco_medio_por_litro, use_container_width = True) 
@@ -369,7 +394,7 @@ with tab3:
 
     '''
     Vê-se que, nos últimos 15 anos, o comércio com a Rússia e o Haiti apresentaram os piores resultados no acumulado. Já o comércio com o Paraguai, 
-    apesar de apresentar o maior resultado absoluto no montate dos valores negociados, é 8° mercado mais rentável do período.'''
+    que apresenta o maior resultado absoluto no montante dos valores negociados, é apenas o 8° mercado mais rentável do período.'''
 
     #evolução do preço médio top 10
     st.markdown('**Evolução do Preço por Litro para os Principais Importadores**')
