@@ -24,7 +24,7 @@ st.set_page_config(layout = 'wide')
 
 #lendo a base de dados
 
-dados = pd.read_csv('dados_uteis/dados.csv')
+dados = pd.read_csv('dados_uteis/dados_uteis.csv')
 
 #tabelas
 
