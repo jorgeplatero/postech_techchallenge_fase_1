@@ -28,240 +28,375 @@ dados = pd.read_csv('dados_uteis/dados_uteis.csv')
 
 #tabelas
 
+#gráficos
+
 #tab1
-evolucao_exportacao = dados.groupby('ano').sum().drop('pais', axis = 1)
+evolucao_exportacao=dados.groupby('ano').sum().drop('pais', axis=1).reset_index()
+fig_evolucao_valores_exportacao = px.line(
+    data_frame=evolucao_exportacao, 
+    x='ano', 
+    y='valor_exportacao',
+    color_discrete_sequence=['#9B3D83'],
+    labels={
+        'ano': 'Ano',
+        'valor_exportacao': 'Valor US$'
+    }
+)
+fig_evolucao_valores_exportacao.update_layout(
+    title='', 
+    xaxis_title='Período', 
+    yaxis_title='Valor (US$)', 
+    showlegend=False, 
+    height=600
+)
 
-acumulado_top_10_mercados = pd.DataFrame(dados.groupby('pais').sum()[['quantidade_exportacao', 'valor_exportacao']])
-selecao = acumulado_top_10_mercados.sort_values('valor_exportacao', ascending = False).head(10).index #selecionando os 10 maiores mercados de exportação
-acumulado_top_10_mercados = acumulado_top_10_mercados.loc[selecao]
+acumulado_top_10_mercados=pd.DataFrame(dados.groupby('pais').sum()[['quantidade_exportacao', 'valor_exportacao']])
+selecao=acumulado_top_10_mercados.sort_values('valor_exportacao', ascending = False).head(10).index #selecionando os 10 maiores mercados de exportação
+acumulado_top_10_mercados=acumulado_top_10_mercados.loc[selecao]
 acumulado_top_10_mercados.reset_index(inplace = True)
+fig_acumulado_valor_top_10_mercados_bar = px.bar(
+    data_frame = acumulado_top_10_mercados,
+    x='pais',
+    y='valor_exportacao',
+    color='valor_exportacao',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    #color_discrete_sequence = ['#673E69'],
+    labels={
+        'pais': 'País',
+        'valor_exportacao': 'Valor US$'
+    }
+)
+fig_acumulado_valor_top_10_mercados_bar.update_layout(
+    title='',  
+    showlegend=False, 
+    bargap=0.1,
+    height=600
+)
 
-selecao = acumulado_top_10_mercados['pais'].to_list()
-evolucao_top_10 = dados[dados.pais.isin(selecao)]
+fig_acumulado_valor_top_10_mercados_treemap=px.treemap(
+    data_frame = acumulado_top_10_mercados,
+    path=['pais'], 
+    values='valor_exportacao',
+    color='valor_exportacao',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    #color_discrete_sequence = ['#673E69'],
+    labels={
+        'pais': 'País',
+        'valor_exportacao': 'Valor US$'
+    }
+)
+fig_acumulado_valor_top_10_mercados_treemap.update_layout(
+    title='',  
+    showlegend=False, 
+    height=600
+)
+
+selecao=acumulado_top_10_mercados['pais'].head().to_list()
+evolucao_top_5=dados[dados.pais.isin(selecao)]
+fig_evolucao_valores_top_5_line=px.line(
+    data_frame=evolucao_top_5, 
+    x='ano', 
+    y='valor_exportacao',
+    color='pais',
+    color_discrete_sequence=px.colors.sequential.Magenta_r,
+    labels={
+        'pais': 'País',
+        'valor_exportacao': 'Valor US$',
+        'ano': 'Ano'
+    }
+)
+fig_evolucao_valores_top_5_line.update_layout(
+    title='', 
+    legend_title='Legenda',
+    height=600
+)
+
+#tab2
+
+fig_evolucao_quantidade_exportacao=px.line(
+    data_frame=evolucao_exportacao, 
+    x='ano', 
+    y='quantidade_exportacao',
+    color_discrete_sequence=['#3EA85A'],
+    labels={
+        'pais': 'País',
+        'quantidade_exportacao': 'Quantidade (Litro)',
+        'ano': 'Ano'
+    }
+)
+fig_evolucao_quantidade_exportacao.update_layout(
+    title='', 
+    showlegend=False, 
+    height=600
+)
+
+fig_acumulado_quantidade_top_10_mercados_bar=px.bar(
+    data_frame = acumulado_top_10_mercados,
+    x='pais',
+    y='quantidade_exportacao',
+    color='quantidade_exportacao',
+    color_continuous_scale=px.colors.sequential.Greens,
+    labels={
+        'pais': 'País',
+        'quantidade_exportacao': 'Quantidade (Litro)'
+    }
+)
+fig_acumulado_quantidade_top_10_mercados_bar.update_layout(
+    title='',  
+    showlegend=False, 
+    bargap=0.1,
+    height=600
+)
+
+fig_acumulado_quantidade_top_10_mercados_treemap=px.treemap(
+    data_frame=acumulado_top_10_mercados,
+    path=['pais'], 
+    values='quantidade_exportacao',
+    color='quantidade_exportacao',
+    color_continuous_scale=px.colors.sequential.Greens,
+    labels={
+        'pais': 'País',
+        'quantidade_exportacao': 'Quantidade (Litro)'
+    }
+)
+fig_acumulado_quantidade_top_10_mercados_treemap.update_layout(
+    title='',  
+    showlegend=False, 
+    height=600
+)
+
+fig_evolucao_quantidade_top_5_line=px.line(
+    data_frame=evolucao_top_5, 
+    x = 'ano', 
+    y = 'quantidade_exportacao',
+    color = 'pais',
+    color_discrete_sequence=px.colors.sequential.Greens,
+    labels={
+        'pais': 'País',
+        'quantidade_exportacao': 'Quantidade (Litro)',
+        'ano': 'Ano'
+    }
+)
+fig_evolucao_quantidade_top_5_line.update_layout(
+    title='', 
+    legend_title='Legenda',
+    height=600
+)
 
 #tab3
-evolucao_preco_medio_por_litro = dados.groupby('ano').mean('valor_exportacao_por_litro').round(2)
+fig_evolucao_valores_quantidade_exportacao=px.line(
+    data_frame=evolucao_exportacao, 
+    x='ano', 
+    y=['valor_exportacao', 'quantidade_exportacao'],
+    labels={
+        'valor_exportacao': 'quantidade_exportacao',
+        'quantidade_exportacao': 'Quantidade (Litro)',
+        'ano': 'Ano'
+    },
+    color_discrete_map={
+        'quantidade_exportacao': '#9B3D83',
+        'valor_exportacao': '#3EA85A'
+    }
+)
+nome_variaveis={'quantidade_exportacao': 'Quantidade (Litros)', 'valor_exportacao': 'Valor (US$)'}
+fig_evolucao_valores_quantidade_exportacao.for_each_trace(lambda x: x.update(
+        name=nome_variaveis[x.name],
+        legendgroup=nome_variaveis[x.name],
+        hovertemplate=x.hovertemplate.replace(x.name, nome_variaveis[x.name])
+    )
+)
+fig_evolucao_valores_quantidade_exportacao.update_layout(
+    title='', 
+    yaxis_title='Valores', 
+    legend_title='Legenda', 
+    height=600,
+)
 
-preco_medio_por_litro_top_10 = evolucao_top_10[['pais', 'valor_exportacao_por_litro']].groupby('pais').mean().round(2)
+evolucao_preco_medio_por_litro=dados.groupby('ano').mean('valor_exportacao_por_litro').round(2).reset_index()
+evolucao_preco_medio_por_litro.head()
+fig_evolucao_preco_medio_por_litro=px.line(
+    data_frame=evolucao_preco_medio_por_litro, 
+    x='ano', 
+    y='valor_exportacao_por_litro',
+    color_discrete_sequence = ['#9B3D83'],
+    labels={
+    'valor_exportacao_por_litro': 'Valor (US$)',
+    'quantidade_exportacao': 'Quantidade (Litro)',
+    'ano': 'Ano'
+    }
+)
+fig_evolucao_preco_medio_por_litro.update_layout(
+    title = '', 
+    height=600
+)
+
+selecao=acumulado_top_10_mercados['pais'].to_list()
+evolucao_top_10=dados[dados.pais.isin(selecao)]
+preco_medio_por_litro_top_10=evolucao_top_10[['pais', 'valor_exportacao_por_litro']].groupby('pais').mean().round(2).reset_index()
+fig_preco_medio_por_litro_top_10_bar=px.bar(
+    data_frame=preco_medio_por_litro_top_10, 
+    x='pais', 
+    y='valor_exportacao_por_litro',
+    color='valor_exportacao_por_litro',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    labels={
+        'pais': 'País',
+        'valor_exportacao_por_litro': 'Valor (US$)'
+    }
+)
+fig_preco_medio_por_litro_top_10_bar.update_layout(
+    title = '',  
+    height=600,
+    bargap=0.1
+)
+
+fig_preco_medio_por_litro_top_10_treemap = px.treemap(
+    data_frame=preco_medio_por_litro_top_10, 
+    path =['pais'], 
+    values = 'valor_exportacao_por_litro', 
+    color='valor_exportacao_por_litro',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    labels={
+        'pais': 'País',
+        'valor_exportacao_por_litro': 'Valor (US$)'
+    }
+)
+fig_preco_medio_por_litro_top_10_treemap.update_layout(
+    title='',
+    showlegend=False,
+    height=600
+)
+
+fig_evolucao_valor_por_litro_top_5 = px.line(
+    data_frame = evolucao_top_5, 
+    x = 'ano', 
+    y = 'valor_exportacao_por_litro',
+    color = 'pais',
+    color_discrete_sequence=px.colors.sequential.Magenta,
+    labels={
+        'ano': 'Ano',
+        'pais': 'País',
+        'valor_exportacao_por_litro': 'Valor (US$)'
+    }
+)
+fig_evolucao_valor_por_litro_top_5.update_layout(
+    title = '',  
+    legend_title = 'Legenda',
+    height=600
+)
 
 percentual_exportacao = dados[['ano', 'pais', 'percentual_exportacao']].round(2)
-evolucao_percentual_medio_exportacao = percentual_exportacao.groupby('ano').mean('percentual_exportacao').round(2)
+evolucao_percentual_medio_exportacao = percentual_exportacao.groupby('ano').mean('percentual_exportacao').round(2).reset_index()
+evolucao_percentual_medio_exportacao.head()
+fig_evolucao_percentual_medio_exportacao = px.line(
+    data_frame=evolucao_percentual_medio_exportacao, 
+    x='ano', 
+    y='percentual_exportacao',
+    color_discrete_sequence = ['#9B3D83'],
+    labels={
+        'ano': 'Ano',
+        'percentual_exportacao': '%'
+    }
+)
+fig_evolucao_percentual_medio_exportacao.update_layout(
+    title = '', 
+    height=600
+)
 
-percentual_medio_exportacao_top_10 = evolucao_top_10.groupby('pais').mean('percentual_exportacao').round(2)
+percentual_medio_exportacao_top_10 = evolucao_top_10.groupby('pais').mean('percentual_exportacao').round(2).reset_index()
+percentual_medio_exportacao_top_10.head()
+fig_percentual_medio_exportacao_top_10_pie = px.pie(
+    data_frame=percentual_medio_exportacao_top_10, 
+    values='percentual_exportacao', 
+    names='pais',
+    color='percentual_exportacao',
+    color_discrete_sequence=px.colors.sequential.Magenta,
+    labels={
+        'pais': 'País',
+        'percentual_exportacao': 'Percentual médio'
+    }
+)
+fig_percentual_medio_exportacao_top_10_pie.update_layout(
+    title = '', 
+    height=400
+)
+
+fig_percentual_medio_exportacao_top_10_treemap = px.treemap(
+    data_frame=percentual_medio_exportacao_top_10, 
+    path=['pais'], 
+    values='percentual_exportacao',
+    color='percentual_exportacao',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    labels={
+        'pais': 'País',
+        'percentual_exportacao': 'Percentual médio'
+    }
+)
+fig_percentual_medio_exportacao_top_10_treemap.update_layout(
+    title = '', 
+    height=600
+)
+
+evolucao_percentual_medio_exportacao_top_5 = evolucao_top_5.groupby(['ano', 'pais']).mean('percentual_exportacao').round(2).reset_index()
+evolucao_percentual_medio_exportacao_top_5.head()
+fig_evolucao_percentual_medio_exportacao_top_5 = px.line(
+    data_frame = evolucao_percentual_medio_exportacao_top_5, 
+    x = 'ano', 
+    y = 'percentual_exportacao',
+    color = 'pais',
+    color_discrete_sequence=px.colors.sequential.Magenta_r,
+    labels={
+        'ano': 'Ano',
+        'pais': 'País',
+        'percentual_exportacao': '%'
+    }
+)
+fig_evolucao_percentual_medio_exportacao_top_5.update_layout(
+    title = '', 
+    legend_title = 'Legenda',
+    height=600
+)
 
 index = evolucao_top_10.query('quantidade_exportacao == 0').index.to_list()
 distribuicao_quantidade_valor_top_10 = evolucao_top_10.drop(index)
 distribuicao_quantidade_valor_top_10.head()
-
-#gráficos
-
-#tab1
-fig_evolucao_valores_exportacao = px.line(
-    evolucao_exportacao, 
-    x = evolucao_exportacao.index, 
-    y = 'valor_exportacao',
-    color_discrete_sequence = ['#673E69'])
-fig_evolucao_valores_exportacao.update_layout(
-    title = '', 
-    xaxis_title = 'Período', 
-    yaxis_title = 'Valor (US$)', 
-    showlegend = False, 
-    height = 600)
-
-fig_acumulado_top_10_mercados_bar = px.bar(
-    data_frame = acumulado_top_10_mercados,
-    x = 'pais',
-    y = 'valor_exportacao',
-    color_discrete_sequence = ['#673E69'])
-fig_acumulado_top_10_mercados_bar.update_layout(
-    title = 'Bar', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Valor (US$)', 
-    showlegend = False, 
-    height = 600, 
-    bargap = 0.1)
-
-fig_acumulado_top_10_mercados_treemap = px.treemap(acumulado_top_10_mercados, path = ['pais'], values = 'valor_exportacao', title = 'Treemap', height = 600)
-fig_acumulado_top_10_mercados_treemap.update_traces(root_color = '#673E69')
-
-fig_evolucao_valores_top_10_line = px.line(
-    data_frame = evolucao_top_10, 
-    x = 'ano', 
-    y = 'valor_exportacao',
-    color = 'pais')
-fig_evolucao_valores_top_10_line.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = 'Valor (US$)', 
-    legend_title = 'Legenda',
-    height = 600)
-
-fig_evolucao_valores_top_10_treemap = px.treemap(evolucao_top_10, path = ['ano', 'pais'], values = 'valor_exportacao', title = 'Treemap', height = 600)
-fig_evolucao_valores_top_10_treemap.update_traces(root_color = '#673E69')
-
-#tab2
-fig_evolucao_quantidade_exportacao = px.line(
-    evolucao_exportacao, 
-    x = evolucao_exportacao.index, 
-    y = 'quantidade_exportacao',
-    color_discrete_sequence = ['#D8D87C'])
-fig_evolucao_quantidade_exportacao.update_layout(
-    title = '', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Quantidade (Litros)', 
-    showlegend = False, 
-    height = 600)
-
-fig_acumulado_top_10_mercados_line = px.bar(
-    data_frame = acumulado_top_10_mercados,
-    x = 'pais',
-    y = 'quantidade_exportacao',
-    color_discrete_sequence = ['#D8D87C']
-    )
-fig_acumulado_top_10_mercados_line.update_layout(
-    title = 'Bar', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Valor (US$)', 
-    showlegend = False, 
-    height = 600, 
-    bargap = 0.1
-    )
-
-fig_acumulado_top_10_mercados_treemap = px.treemap(acumulado_top_10_mercados, path = ['pais'], values = 'quantidade_exportacao', title = 'Treemap', height = 600)
-fig_acumulado_top_10_mercados_treemap.update_traces(root_color = '#D8D87C')
-
-fig_evolucao_quantidade_top_10_line = px.line(
-data_frame = evolucao_top_10, 
-x = 'ano', 
-y = 'quantidade_exportacao',
-color = 'pais')
-fig_evolucao_quantidade_top_10_line.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = 'Quantidade (Litros)', 
-    legend_title = 'Legenda',
-    height = 600)
-
-fig_evolucao_quantidade_top_10_treemap = px.treemap(evolucao_top_10, path = ['ano', 'pais'], values = 'quantidade_exportacao', title = 'Treemap', height = 600)
-fig_evolucao_quantidade_top_10_treemap.update_traces(root_color = '#D8D87C')
-
-#tab3
-fig_evolucao_valores_quantidade_exportacao = px.line(
-    evolucao_exportacao, 
-    x = evolucao_exportacao.index, 
-    y = ['valor_exportacao', 'quantidade_exportacao'],
-    color_discrete_map = {
-        'quantidade_exportacao': '#673E69',
-        'valor_exportacao': '#D8D87C'
-        })
-nome_variaveis = {'quantidade_exportacao': 'Quantidade (Litros)', 'valor_exportacao': 'Valor (US$)'}
-fig_evolucao_valores_quantidade_exportacao.for_each_trace(lambda x: x.update(
-                                    name = nome_variaveis[x.name],
-                                    legendgroup = nome_variaveis[x.name],
-                                    hovertemplate = x.hovertemplate.replace(x.name, nome_variaveis[x.name])))
-fig_evolucao_valores_quantidade_exportacao.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Valores', 
-    legend_title = 'Legenda', 
-    width = 1000, 
-    height = 600)
-
-fig_evolucao_preco_medio_por_litro = px.line(
-        data_frame = evolucao_preco_medio_por_litro, 
-        x = evolucao_preco_medio_por_litro.index, 
-        y = 'valor_exportacao_por_litro',
-        color_discrete_sequence = ['#673E69'])
-fig_evolucao_preco_medio_por_litro.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = 'Valor (US$$)',
-    height = 600)
-
-fig_preco_medio_por_litro_top_10_bar = px.bar(
-    data_frame = preco_medio_por_litro_top_10, 
-    x = preco_medio_por_litro_top_10.index, 
-    y = 'valor_exportacao_por_litro',
-    color_discrete_sequence = ['#673E69'])
-fig_preco_medio_por_litro_top_10_bar.update_layout(
-    title = 'Bar', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Valor (US$)', 
-    height = 600,
-    bargap = 0.1)
-
-fig_preco_medio_por_litro_top_10_treemap = px.treemap(preco_medio_por_litro_top_10, path = [preco_medio_por_litro_top_10.index], values = 'valor_exportacao_por_litro', title = 'Treemap', height = 600)
-fig_preco_medio_por_litro_top_10_treemap.update_traces(root_color = '#673E69')
-
-fig_evolucao_valor_por_litro_top_10 = px.line(
-    data_frame = evolucao_top_10, 
-    x = 'ano', 
-    y = 'valor_exportacao_por_litro',
-    color = 'pais')
-fig_evolucao_valor_por_litro_top_10.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = 'Valor (US$)', 
-    legend_title = 'Legenda',
-    height = 600)
-
-fig_evolucao_percentual_medio_exportacao = px.line(
-    data_frame = evolucao_percentual_medio_exportacao, 
-    x = evolucao_percentual_medio_exportacao.index, 
-    y = 'percentual_exportacao',
-    color_discrete_sequence = ['#673E69'])
-fig_evolucao_percentual_medio_exportacao.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = '%',
-    height = 600)
-
-fig_percentual_medio_exportacao_top_10_bar = px.pie(percentual_medio_exportacao_top_10, values = 'percentual_exportacao', names = percentual_medio_exportacao_top_10.index, title = 'Pie')
-
-fig_percentual_medio_exportacao_top_10_treemap = px.treemap(percentual_medio_exportacao_top_10, path = [percentual_medio_exportacao_top_10.index], values = 'percentual_exportacao', title = 'Treemap', height = 600)
-fig_percentual_medio_exportacao_top_10_treemap.update_traces(root_color = '#673E69')
-
-fig_evolucao_percentual_medio_exportacao_top_10 = px.line(
-    data_frame = evolucao_top_10, 
-    x = 'ano', 
-    y = 'percentual_exportacao',
-    color = 'pais')
-fig_evolucao_percentual_medio_exportacao_top_10.update_layout(
-    title = 'Time series', 
-    xaxis_title = 'Período', 
-    yaxis_title = '%', 
-    legend_title = 'Legenda',
-    height = 600)
-
 fig_distribuicao_valor_top_10 = px.scatter(
-    data_frame = distribuicao_quantidade_valor_top_10, 
-    x = 'pais', 
-    y = 'ano', 
-    size = 'valor_exportacao', 
-    color = px.Constant('Valor (US$)'),
-    color_discrete_sequence = ['#673E69'])
+    data_frame=distribuicao_quantidade_valor_top_10, 
+    x='pais', 
+    y='ano', 
+    size='valor_exportacao', 
+    color='valor_exportacao',
+    color_continuous_scale=px.colors.sequential.Magenta,
+    labels={
+        'ano': 'Ano',
+        'pais': 'País',
+        'valor_exportacao': 'Valor US$'
+    }
+)
 fig_distribuicao_valor_top_10.update_layout(
-    title = 'Bubble', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Ano', 
-    legend_title = 'Legenda',
-    height = 700)
-fig_distribuicao_valor_top_10.update_traces(marker = dict(size = 3.5 * distribuicao_quantidade_valor_top_10['valor_exportacao']))
+    title='',
+    height=600
+)
+fig_distribuicao_valor_top_10.update_traces(marker=dict(size=3.5 * distribuicao_quantidade_valor_top_10['valor_exportacao']))
 
-fig_distribuicao_quantidade_top_10 = px.scatter(
-    data_frame = distribuicao_quantidade_valor_top_10, 
-    x = 'pais', 
-    y = 'ano', 
-    size = 'quantidade_exportacao', 
-    color = px.Constant('Quantidade (Litros)'),
-    color_discrete_sequence = ['#D8D87C'])
+fig_distribuicao_quantidade_top_10=px.scatter(
+    data_frame=distribuicao_quantidade_valor_top_10, 
+    x='pais', 
+    y='ano', 
+    size='quantidade_exportacao', 
+    color='quantidade_exportacao',
+    color_continuous_scale=px.colors.sequential.Greens,
+    labels={
+        'ano': 'Ano',
+        'pais': 'País',
+        'quantidade_exportacao': 'Quantidade (Litros)'
+    }
+)
 fig_distribuicao_quantidade_top_10.update_layout(
-    title = 'Bubble', 
-    xaxis_title = 'Países', 
-    yaxis_title = 'Ano', 
-    legend_title = 'Legenda',
-    height = 700)
-fig_distribuicao_valor_top_10.update_traces(marker = dict(size = 3.5 * distribuicao_quantidade_valor_top_10['quantidade_exportacao']))
+    title='', 
+    height=600
+)
+fig_distribuicao_quantidade_top_10.update_traces(marker=dict(size=3.5 * distribuicao_quantidade_valor_top_10['quantidade_exportacao']))
 
 #visualização no streamlit
 
@@ -313,18 +448,16 @@ with tab1:
     coluna3, coluna4 = st.columns(2)
     with coluna3:
         #bar
-        st.plotly_chart(fig_acumulado_top_10_mercados_bar, use_container_width = True)
+        st.plotly_chart(fig_acumulado_valor_top_10_mercados_bar, use_container_width = True)
     with coluna4:
         #treemap
-        st.plotly_chart(fig_acumulado_top_10_mercados_treemap, use_container_width = True)
+        st.plotly_chart(fig_acumulado_valor_top_10_mercados_treemap, use_container_width = True)
 
-    #evolução de valores exportados top 10
+    #evolução de valores exportados top 5
     st.markdown('**Evolução dos Valores para os Principais Importadores**')
     #line
-    st.plotly_chart(fig_evolucao_valores_top_10_line, use_container_width = True)
-    #treemap
-    st.plotly_chart(fig_evolucao_valores_top_10_treemap, use_container_width = True)
-
+    st.plotly_chart(fig_evolucao_valores_top_5_line, use_container_width = True)
+    
 with tab2:
 
     #cartões
@@ -343,17 +476,16 @@ with tab2:
     coluna3, coluna4 = st.columns(2)
     with coluna3:
         #bar 
-        st.plotly_chart(fig_acumulado_top_10_mercados_line, use_container_width = True)
+        st.plotly_chart(fig_acumulado_quantidade_top_10_mercados_bar, use_container_width = True)
     with coluna4:
         #treemap
-        st.plotly_chart(fig_acumulado_top_10_mercados_treemap, use_container_width = True)
+        st.plotly_chart(fig_acumulado_quantidade_top_10_mercados_treemap, use_container_width = True)
 
-    #evolução da quantidade exportada top 10
+    #evolução da quantidade exportada top 5
     st.markdown('**Evolução da Exportação para os Principais Importadores**')
     #line
-    st.plotly_chart(fig_evolucao_quantidade_top_10_line, use_container_width = True)
-    #treemap
-    st.plotly_chart(fig_evolucao_quantidade_top_10_treemap, use_container_width = True)
+    st.plotly_chart(fig_evolucao_quantidade_top_5_line, use_container_width = True)
+
 
 with tab3:
 
@@ -395,9 +527,9 @@ with tab3:
     Vê-se que, nos últimos 15 anos, o comércio com a Rússia e o Haiti apresentaram os piores resultados no acumulado. Já o comércio com o Paraguai, 
     que apresenta o maior resultado absoluto no montante dos valores negociados, é apenas o 8° mercado mais rentável do período.'''
 
-    #evolução do preço médio top 10
+    #evolução do preço médio top 5
     st.markdown('**Evolução do Preço por Litro para os Principais Importadores**')
-    st.plotly_chart(fig_evolucao_valor_por_litro_top_10, use_container_width = True)
+    st.plotly_chart(fig_evolucao_valor_por_litro_top_5, use_container_width = True)
 
     #evolução do percentual médio 
     st.markdown('**Evolução do Percentual Médio da Produção Nacional Exportado**')
@@ -408,16 +540,16 @@ with tab3:
     coluna7, coluna8 = st.columns(2)
     with coluna7:
         #bar
-        st.plotly_chart(fig_percentual_medio_exportacao_top_10_bar, use_container_width = True)
+        st.plotly_chart(fig_percentual_medio_exportacao_top_10_pie, use_container_width = True)
     with coluna8:
         #treemap
         st.plotly_chart(fig_percentual_medio_exportacao_top_10_treemap, use_container_width = True)
 
-    #evolução do percentual médio top 10
+    #evolução do percentual médio top 5
     st.markdown('**Evolução do Percentual Médio da Produção Nacional para os Principais Importadores**')
-    st.plotly_chart(fig_evolucao_percentual_medio_exportacao_top_10, use_container_width = True)
-  
-    #distribuição top 10
+    st.plotly_chart(fig_evolucao_percentual_medio_exportacao_top_5, use_container_width = True)
+
+    #distribuição top 5
     st.markdown('**Distribuição da Quantidade e Valor da Exportação para os Principais Importadores**')
     coluna9, coluna10 = st.columns(2)
     with coluna9:
