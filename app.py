@@ -408,18 +408,24 @@ tab0, tab1, tab2, tab3 = st.tabs(['Geral', 'Valor', 'Quantidade', 'Estatísticas
 
 #separando as tabs
 with tab0:
-
+    st.markdown(
     #texto
     '''
-    ## Dados e estatísticas da exportação de vinhos da Vitibrasil nos últimos 15 anos
-
-    Base de dados Vitibrasil
-
-    http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06
-
-    A Vitibrasil uma organização associada à Embrapa, que tem como objetivo fornecer informações sobre a produção de uvas no estado do Rio Grande do Sul, que podem ser encontradas em seu website.
-    Este dashboard apresenta os principais dados e estatísticas a respeito da exportação de vinho brasileiro nos últimos 15 anos.
-    '''
+        <div style='text-align: justify;'>
+            <p>
+                <h3>Dados e estatísticas da exportação de vinhos da Vitibrasil nos últimos 15 anos</h3>
+            </p>
+            <p>
+                A Vitibrasil uma organização associada à Embrapa, que tem como objetivo fornecer informações sobre a produção de uvas no estado do Rio Grande do Sul, que podem ser encontradas em seu website. Este dashboard apresenta os principais dados e estatísticas a respeito da exportação de vinho brasileiro nos últimos 15 anos.
+            </p>
+            <p>
+                Para mais detalhes, acessa a <b><a style='text-decoration:none', href='http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06'>base de dados</a></b> da vitibrasil.
+            <p>
+        </div>
+    ''',
+        unsafe_allow_html=True
+    )
+    
     #dataFrame
     df = pd.DataFrame(dados)
 
