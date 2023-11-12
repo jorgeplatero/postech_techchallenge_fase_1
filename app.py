@@ -419,7 +419,7 @@ with tab0:
                 A Vitibrasil uma organização associada à Embrapa, que tem como objetivo fornecer informações sobre a produção de uvas no estado do Rio Grande do Sul, que podem ser encontradas em seu website. Este dashboard apresenta os principais dados e estatísticas a respeito da exportação de vinho brasileiro nos últimos 15 anos.
             </p>
             <p>
-                Para mais detalhes, acessa a <b><a style='text-decoration:none', href='http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06'>base de dados</a></b> da vitibrasil.
+                Para mais detalhes, acesse a <b><a style='text-decoration:none', href='http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06'>base de dados</a></b> da vitibrasil.
             <p>
         </div>
     ''',
