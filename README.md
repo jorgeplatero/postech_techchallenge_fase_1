@@ -1,4 +1,4 @@
-# DataViz para análise de dados de exportação de vinho brasileiro entre 2007 e 2021
+# DataViz com análise de dados de exportação de vinho brasileiro entre 2007 e 2021
 
 ## Descrição do projeto
 
