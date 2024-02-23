@@ -12,4 +12,4 @@ https://pt.wikipedia.org/wiki/Lista_de_pa%C3%ADses_por_popula%C3%A7%C3%A3o
 
 ## Link para Aplicação
 
-Dashboard Streamlit: https://postechtechchallengefase1-d7npvkdgqtlxew2ydeue7z.streamlit.app/
+Dashboard Streamlit: https://postechtechchallengefase1-nzyixopq8dxumqrhuvfe7r.streamlit.app/
