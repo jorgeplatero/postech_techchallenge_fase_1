@@ -6,10 +6,8 @@ Este projeto tem por objetivo analisar o montante de venda de exportação de vi
 
 ## Fonte de Dados
 
-http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06
-
-https://pt.wikipedia.org/wiki/Lista_de_pa%C3%ADses_por_popula%C3%A7%C3%A3o
+Vitibrasil: <a style="text-decoration:none;" href="http://vitibrasil.cnpuv.embrapa.br/index.php?opcao=opt_06" target="_blank">link</a>.
 
 ## Link para Aplicação
 
-Dashboard Streamlit: https://postechtechchallengefase1-nzyixopq8dxumqrhuvfe7r.streamlit.app/
+Dashboard Streamlit: <a style="text-decoration:none;" href="https://postechtechchallengefase1-nzyixopq8dxumqrhuvfe7r.streamlit.app/" target="_blank">link</a>.
